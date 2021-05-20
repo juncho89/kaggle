@@ -125,3 +125,39 @@ log_loss(y_test, y_pred)
 
 
 
+
+lgbm_clf = LGBMClassifier(random_state=42, n_jobs=-1, objective='multiclass', metric='multi_logloss', n_estimators=10000,
+                     colsample_bytree=0.7, learning_rate=0.01, subsample=0.7)
+lgbm_clf.fit(x_train, y_train)
+y_pred = lgbm_clf.predict_proba(x_test)
+log_loss(y_test, y_pred)
+
+
+lgbm_clf = LGBMClassifier(random_state=42, n_jobs=-1, objective='multiclass', metric='multi_logloss', n_estimators=800,
+                     colsample_bytree =0.7, learning_rate=0.01, subsample=1.0)
+lgbm_clf.fit(x_train, y_train)
+y_pred = lgbm_clf.predict_proba(x_test)
+log_loss(y_test, y_pred)
+
+prob = lgbm_clf.predict_proba(test)
+df = pd.DataFrame(data=prob)
+submission['Class_1'] = df[0]
+submission['Class_2'] = df[1]
+submission['Class_3'] = df[2]
+submission['Class_4'] = df[3]
+submission.to_csv('submission_lgbm3.csv', index=False)
+
+
+xgb_clf = XGBClassifier(random_state=42,tree_method='gpu_hist',subsample=0.7)
+xgb_clf.fit(X_train, y_train, verbose=True)
+y_pred = lgbm_clf.predict_proba(x_test)
+log_loss(y_test, y_pred)
+
+
+
+xgb_clf = XGBClassifier(random_state=42, tree_method='gpu_hist', subsample=0.7)
+xgb_clf.fit(X_train, y_train, verbose=True)
+y_pred = lgbm_clf.predict_proba(x_test)
+log_loss(y_test, y_pred)
+
+
